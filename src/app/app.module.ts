@@ -6,11 +6,15 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import { PlayerListComponent } from './player-list/player-list.component';
 import {PlayerService} from './player/player.service';
+import { NavComponent } from './nav/nav.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerListComponent
+    PlayerListComponent,
+    NavComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
