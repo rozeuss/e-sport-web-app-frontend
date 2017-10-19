@@ -5,7 +5,9 @@ import {HomeComponent} from '../components/home/home.component';
 import {TournamentAddComponent} from '../components/tournament/tournament-add/tournament-add.component';
 import {MyTournamentsComponent} from '../components/tournament/my-tournaments/my-tournaments.component';
 import {LoginComponent} from '../components/login/login.component';
-import {PageNotFoundComponent} from '../page-not-found/page-not-found.component';
+import {PageNotFoundComponent} from '../components/page-not-found/page-not-found.component';
+import {RegistrationComponent} from '../components/registration/registration.component';
+import {TournamentsListComponent} from '../components/tournament/tournaments-list/tournaments-list.component';
 
 const appRoutes: Routes = [
   {
@@ -25,8 +27,16 @@ const appRoutes: Routes = [
     component: MyTournamentsComponent
   },
   {
+    path: 'tournament/list',
+    component: TournamentsListComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'registration',
+    component: RegistrationComponent
   },
   {
     path: '**',
