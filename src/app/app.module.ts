@@ -44,4 +44,5 @@ import { TournamentsListComponent } from './components/tournament/tournaments-li
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

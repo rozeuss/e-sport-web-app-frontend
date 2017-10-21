@@ -1,2 +1,18 @@
 export enum Country {
+  'Poland',
+  'Germany',
+  'South Korea',
+  'USA',
+  'Sweden',
+  'Canada',
+  'China',
+  'Brazil',
+  'Greece',
+  'Spain',
+  'United-Kingdom',
+  'France',
+  'Denmark',
+  'Russia',
+  'Ukraine',
+  'Norway',
 }
