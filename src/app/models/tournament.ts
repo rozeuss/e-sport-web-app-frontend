@@ -3,9 +3,40 @@ export class Tournament {
   private _id: number;
   private _description: string;
   private _location: string;
-  private _startDate: Date;
-  private _endDate: Date;
+  private _startDate: string;
+  private _endDate: string;
   private _prize: number;
+  private _title: string;
+  private _organizerId: number;
+
+  constructor(id: number, description: string, location: string, startDate: string, endDate: string,
+              prize: number, title: string, organizerId: number) {
+    this._id = id;
+    this._description = description;
+    this._location = location;
+    this._startDate = startDate;
+    this._endDate = endDate;
+    this._prize = prize;
+    this._title = title;
+    this._organizerId = organizerId;
+  }
+
+
+  get organizerId(): number {
+    return this._organizerId;
+  }
+
+  set organizerId(value: number) {
+    this._organizerId = value;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+  }
 
   get id(): number {
     return this._id;
@@ -31,19 +62,19 @@ export class Tournament {
     this._location = value;
   }
 
-  get startDate(): Date {
+  get startDate(): string {
     return this._startDate;
   }
 
-  set startDate(value: Date) {
+  set startDate(value: string) {
     this._startDate = value;
   }
 
-  get endDate(): Date {
+  get endDate(): string {
     return this._endDate;
   }
 
-  set endDate(value: Date) {
+  set endDate(value: string) {
     this._endDate = value;
   }
 
@@ -53,14 +84,5 @@ export class Tournament {
 
   set prize(value: number) {
     this._prize = value;
-  }
-
-  constructor(id: number, description: string, location: string, startDate: Date, endDate: Date, prize: number) {
-    this._id = id;
-    this._description = description;
-    this._location = location;
-    this._startDate = startDate;
-    this._endDate = endDate;
-    this._prize = prize;
   }
 }

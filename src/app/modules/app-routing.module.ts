@@ -8,6 +8,12 @@ import {LoginComponent} from '../components/login/login.component';
 import {PageNotFoundComponent} from '../components/page-not-found/page-not-found.component';
 import {RegistrationComponent} from '../components/registration/registration.component';
 import {TournamentsListComponent} from '../components/tournament/tournaments-list/tournaments-list.component';
+import {TournamentInfoComponent} from '../components/tournament/tournament-info/tournament-info.component';
+import {TournamentService} from '../services/tournament/tournament.service';
+import {TournamentResolver} from '../services/resolvers/tournament-resolver';
+import {MatchService} from '../services/match/match.service';
+import {TournamentMatchesResolver} from '../services/resolvers/tournament-matches-resolver';
+import {MyTournamentGuard} from '../services/guards/my-tournament-guard';
 
 const appRoutes: Routes = [
   {
@@ -24,7 +30,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'tournament/my',
-    component: MyTournamentsComponent
+    component: MyTournamentsComponent,
+    canActivate: [MyTournamentGuard]
   },
   {
     path: 'tournament/list',
@@ -39,15 +46,29 @@ const appRoutes: Routes = [
     component: RegistrationComponent
   },
   {
+    path: 'tournament/:id',
+    component: TournamentInfoComponent,
+    resolve: {
+      tournament: TournamentResolver,
+      tournamentMatches: TournamentMatchesResolver
+    }
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes)],
+  imports: [RouterModule.forRoot(appRoutes
+ //   , {enableTracing: true}
+    // @TODO powyzej do debugowania
+    )],
   exports: [RouterModule]
 })
 
 export class AppRoutingModule {
+
+  constructor(private tournamentService: TournamentService, private matchService: MatchService) {
+  }
 }

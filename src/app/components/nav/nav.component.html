@@ -11,10 +11,10 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active">
+        <li routerLinkActive="active">
           <a routerLink="about" >O aplikacji</a>
         </li>
-        <li class="dropdown">
+        <li class="dropdown" routerLinkActive="active">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Pages <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li>
@@ -25,22 +25,22 @@
             </li>
           </ul>
         </li>
-        <li>
+        <li routerLinkActive="active">
           <a routerLink="tournament/list">Przeglądaj</a>
         </li>
-        <li>
+        <li routerLinkActive="active">
         <a routerLink="tournament/organize">Zorganizuj turniej</a>
       </li>
-        <li>
+        <li routerLinkActive="active">
           <a routerLink="tournament/my">Moje turnieje</a>
         </li>
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="divider-vertical">
-          <a routerLink="login">Zaloguj się</a>
+        <li class="divider-vertical " routerLinkActive="active">
+          <a (click)="openModalWithComponent()">Zaloguj się</a>
         </li>
-        <li>
+        <li routerLinkActive="active">
           <a routerLink="registration">Załóż konto</a>
         </li>
       </ul>

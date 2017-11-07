@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {TournamentService} from '../../../services/tournament/tournament.service';
+import {Tournament} from '../../../models/tournament';
 
 @Component({
   selector: 'app-my-tournaments',
@@ -7,13 +9,21 @@ import {Router} from '@angular/router';
   styleUrls: ['./my-tournaments.component.css']
 })
 export class MyTournamentsComponent implements OnInit {
+  tournaments: Array<Tournament>;
+  isDataLoaded: Boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private tournamentService: TournamentService) {
+  }
 
   ngOnInit() {
-    // this.ownerService.getOwners().subscribe(
-    //   owners => this.owners = owners,
-    //   error => this.errorMessage = <any> error);
+    const ID_ACCOUNT_POBIERANY_Z_TOKENA = 1;
+    this.tournamentService.findAllByOrganizer(ID_ACCOUNT_POBIERANY_Z_TOKENA).subscribe(tournaments => {
+      this.tournaments = tournaments.reverse();
+      console.log(this.tournaments);
+      this.isDataLoaded = true;
+    }, error => {
+      console.log(error);
+    });
   }
 
   addTournament() {

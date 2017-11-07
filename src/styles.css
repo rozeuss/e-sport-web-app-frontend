@@ -77,3 +77,22 @@ header.carousel .fill {
     height: 70%;
   }
 }
+
+.success-green-text {
+  color: #337ab7;
+  font-size: 90%;
+}
+
+hr {
+  border-top: 2px solid #eee;
+}
+
+.date-from-to {
+  font-size: 110%;
+  padding-top: 2em;
+  font-style: italic;
+}
+
+.date-from-to p:last-child {
+
+}

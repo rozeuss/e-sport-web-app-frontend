@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {Account} from '../../../models/account';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {TournamentService} from '../../../services/tournament/tournament.service';
+import {Tournament} from '../../../models/tournament';
 
 @Component({
   selector: 'app-tournaments-list',
@@ -7,12 +9,18 @@ import {Account} from '../../../models/account';
   styleUrls: ['./tournaments-list.component.css']
 })
 export class TournamentsListComponent implements OnInit {
+  tournaments: Array<Tournament>;
 
-  constructor() { }
-
-  ngOnInit() {
-    const account = new Account();
-    const email = account.email;
+  constructor(private router: Router, private tournamentService: TournamentService) {
   }
 
+  ngOnInit() {
+    this.tournamentService.listAll().subscribe(
+      data => {
+        console.log(data);
+        this.tournaments = data;
+      },
+      error => console.error(error)
+    );
+  }
 }
