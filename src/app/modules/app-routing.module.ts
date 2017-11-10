@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AboutComponent} from '../components/about/about.component';
 import {HomeComponent} from '../components/home/home.component';
 import {TournamentAddComponent} from '../components/tournament/tournament-add/tournament-add.component';
 import {MyTournamentsComponent} from '../components/tournament/my-tournaments/my-tournaments.component';
@@ -14,15 +13,14 @@ import {TournamentResolver} from '../services/resolvers/tournament-resolver';
 import {MatchService} from '../services/match/match.service';
 import {TournamentMatchesResolver} from '../services/resolvers/tournament-matches-resolver';
 import {MyTournamentGuard} from '../services/guards/my-tournament-guard';
+import {TournamentListResolver} from '../services/resolvers/tournament-list-resolver';
+import {TeamInfoComponent} from '../components/team/team-info/team-info.component';
+import {TeamResolver} from '../services/resolvers/team-resolver';
 
 const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent
-  },
-  {
-    path: 'about',
-    component: AboutComponent
   },
   {
     path: 'tournament/organize',
@@ -35,7 +33,17 @@ const appRoutes: Routes = [
   },
   {
     path: 'tournament/list',
-    component: TournamentsListComponent
+    component: TournamentsListComponent,
+    resolve: {
+      tournamentList: TournamentListResolver
+    }
+  },
+  {
+    path: 'team/:id',
+    component: TeamInfoComponent,
+    resolve: {
+      team: TeamResolver,
+    }
   },
   {
     path: 'login',

@@ -6,6 +6,7 @@ import 'rxjs/add/operator/switchMap';
 import {Match} from '../../../models/match';
 import {TeamService} from '../../../services/team/team.service';
 import {Team} from '../../../models/team';
+import {TournamentService} from '../../../services/tournament/tournament.service';
 
 @Component({
   selector: 'app-tournament-info',
@@ -17,17 +18,21 @@ export class TournamentInfoComponent implements OnInit {
   @Input() tournament: Tournament;
   matches: Array<Match>;
   teams: Array<Team>;
+  signUpDisabled: Boolean = false;
 
-  constructor(private route: ActivatedRoute, private location: Location, private teamService: TeamService) {
+  constructor(private route: ActivatedRoute, private location: Location, private teamService: TeamService,
+              private tournamentService: TournamentService) {
     console.log(route);
   }
 
   ngOnInit() {
-  // snapshot nie uzywa observable, lepiej robic this.route.paramMap.switchMap
+    // snapshot nie uzywa observable, lepiej robic this.route.paramMap.switchMap
+
     this.tournament = this.route.snapshot.data['tournament'];
     this.matches = this.route.snapshot.data['tournamentMatches'];
     this.route.paramMap.subscribe(TEST => {
     });
+    this.isAlreadySigned();
     this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
       console.log(teams);
       this.teams = teams;
@@ -55,7 +60,19 @@ export class TournamentInfoComponent implements OnInit {
   }
 
   signUp(): void {
-    console.log('NO ZARA TO ZROBIE CZEGO');
+    // @TODO PRZEKAZYWAC TEAMID Z SECURITY
+    this.tournamentService.signUpForTournament(this.tournament.id, 1).subscribe(data => {
+        console.log(data);
+        this.signUpDisabled = true;
+      },
+      error2 => {
+        console.log(error2);
+      });
+  }
+
+  isAlreadySigned(): void {
+    this.tournamentService.isTeamAlreadySignedForTournament(this.tournament.id, 1)
+      .subscribe(data => this.signUpDisabled = data);
   }
 
 }

@@ -16,4 +16,10 @@ export class TeamService {
     return this.http.get(this.entity_url + '/findAllSignedForTournament/' + tournamentId)
       .map((response: Response) => response.json());
   }
+
+  findById(teamId: Number): Observable<Team> {
+    return this.http.get(this.entity_url + '/findById/' + teamId)
+      .map((response: Response) => response.json());
+  }
+
 }

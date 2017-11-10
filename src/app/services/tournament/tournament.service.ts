@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
+import {Headers, Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {Tournament} from '../../models/tournament';
@@ -35,4 +35,21 @@ export class TournamentService {
       .map((response: Response) => <Tournament[]> response.json());
   }
 
+  signUpForTournament(tournamentId: number, teamId: number): Observable<Boolean> {
+    const params = new URLSearchParams();
+    params.append('tournamentId', tournamentId.toString());
+    params.append('teamId', teamId.toString());
+    return this.http.post(this.entity_url + '/signUpForTournament', params)
+      .map((response: Response) => response.json());
+  }
+
+  isTeamAlreadySignedForTournament(tournamentId: number, teamId: number): Observable<Boolean> {
+    const params = new URLSearchParams();
+    params.append('tournamentId', tournamentId.toString());
+    params.append('teamId', teamId.toString());
+    const requestOptions = new RequestOptions();
+    requestOptions.params = params;
+    return this.http.get(this.entity_url + '/isTeamAlreadySignedForTournament', requestOptions)
+      .map((response: Response) => response.json());
+  }
 }

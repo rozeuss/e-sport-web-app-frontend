@@ -1,0 +1,47 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Zespół
+        <small> {{team?.name}}</small>
+        <small> {{team?.country}}</small>
+        <span class="pull-right">
+        <button class="btn btn-primary" (click)="goBack()">Wróć</button>
+        </span>
+      </h1>
+      <tabset>
+        <tab heading="Zawodnicy">
+          <div class="row">
+          <div *ngFor="let player of players" class="fadeInAnimation">
+              <div class="col-md-3 text-center">
+                <div class="thumbnail">
+                  <img class="img-responsive" src="http://placehold.it/400x300" alt="">
+                  <div class="caption">
+                    <h3>{{player.playerName}}<br>
+                      <small>{{player.firstName}} {{player.lastName}}</small>
+                    </h3>
+                    <ul class="list-inline">
+                      <li><a><i class="fa fa-2x fa-facebook-square"></i></a>
+                      </li>
+                      <li><a><i class="fa fa-2x fa-linkedin-square"></i></a>
+                      </li>
+                      <li><a><i class="fa fa-2x fa-twitter-square"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab>
+          <ng-template tabHeading>Statystyki</ng-template>
+          <div class="row">
+
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+
+</div>

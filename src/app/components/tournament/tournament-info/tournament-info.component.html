@@ -6,31 +6,98 @@
         <small> {{tournament.title}} </small>
         <span class="pull-right">
         <button class="btn btn-primary" (click)="goBack()">Wróć</button>
-        <button class="btn btn-primary" (click)="signUp()">Zapisz się</button>
+        <button class="btn btn-primary" [disabled]="signUpDisabled" (click)="signUp()">Zapisz się</button>
         </span>
       </h1>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="media">
+            <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-calendar-check-o fa-stack-1x fa-inverse"></i>
+                        </span>
+            </div>
+            <div class="media-body">
+              <h3 class="media-heading">Termin</h3>
+              <p>{{tournament.startDate}} - {{tournament.endDate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="media">
+            <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
+                        </span>
+            </div>
+            <div class="media-body">
+              <h3 class="media-heading">Lokalizacja</h3>
+              <p> {{tournament.location}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="media">
+            <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-money fa-stack-1x fa-inverse"></i>
+                        </span>
+            </div>
+            <div class="media-body">
+              <h3 class="media-heading">Nagroda</h3>
+              <p>{{tournament.prize}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="media">
+            <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-info fa-stack-1x fa-inverse"></i>
+                        </span>
+            </div>
+            <div class="media-body">
+              <h3 class="media-heading">Opis</h3>
+              <p> {{tournament.description}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <tabset >
         <tab heading="Mecze">
-          <div *ngFor="let match of matches">
+          <div *ngFor="let match of matches" class="fadeInAnimation">
             {{match | json}}
           </div>
 
         </tab>
         <tab>
-          <ng-template tabHeading>Zawodnicy</ng-template>
-          <div *ngFor="let team of teams">
-            {{team | json}}
+          <ng-template tabHeading>Zespoły</ng-template>
+          <div class="row">
+          <div *ngFor="let team of teams" class="col-md-2 col-sm-4 col-xs-6 fadeInAnimation paddingTop1Percent">
+
+            <a [routerLink]="['/team', team.id]">
+            <img tooltip="{{team.name}}" class="img-responsive img-hover customer-img" src="http://placehold.it/250x250?text=Logo zespolu">
+            </a>
+          </div>
           </div>
         </tab>
 
         <tab>
           <ng-template tabHeading>Terminarz</ng-template>
-
+            <div class="fadeInAnimation">
+              Daty
+            </div>
         </tab>
 
         <tab>
           <ng-template tabHeading>Oglądaj</ng-template>
-
+          <div class="fadeInAnimation">
+            Media strumieniowe
+          </div>
         </tab>
       </tabset>
     </div>

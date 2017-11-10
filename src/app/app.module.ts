@@ -4,11 +4,10 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {HttpModule} from '@angular/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {PlayerListComponent} from './components/player-list/player-list.component';
+import {PlayerListComponent} from './components/player/player-list/player-list.component';
 import {PlayerService} from './services/player/player.service';
 import {NavComponent} from './components/nav/nav.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {AboutComponent} from './components/about/about.component';
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './modules/app-routing.module';
 import {TournamentAddComponent} from './components/tournament/tournament-add/tournament-add.component';
@@ -29,10 +28,14 @@ import { TournamentInfoComponent } from './components/tournament/tournament-info
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import {TeamService} from './services/team/team.service';
-import {BsModalService, BsModalRef} from 'ngx-bootstrap';
+import {BsModalService, BsModalRef, TooltipModule} from 'ngx-bootstrap';
 import {TournamentResolver} from './services/resolvers/tournament-resolver';
 import {TournamentMatchesResolver} from './services/resolvers/tournament-matches-resolver';
 import {MyTournamentGuard} from './services/guards/my-tournament-guard';
+import {TournamentListResolver} from './services/resolvers/tournament-list-resolver';
+import { MatchInfoComponent } from './components/match/match-info/match-info.component';
+import { TeamInfoComponent } from './components/team/team-info/team-info.component';
+import {TeamResolver} from './services/resolvers/team-resolver';
 defineLocale('pl', pl);
 
 @NgModule({
@@ -41,7 +44,6 @@ defineLocale('pl', pl);
     PlayerListComponent,
     NavComponent,
     FooterComponent,
-    AboutComponent,
     HomeComponent,
     TournamentAddComponent,
     MyTournamentsComponent,
@@ -49,7 +51,9 @@ defineLocale('pl', pl);
     PageNotFoundComponent,
     RegistrationComponent,
     TournamentsListComponent,
-    TournamentInfoComponent
+    TournamentInfoComponent,
+    MatchInfoComponent,
+    TeamInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +66,7 @@ defineLocale('pl', pl);
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
+    TooltipModule.forRoot(),
     AppRoutingModule
 
 ],
@@ -69,11 +74,13 @@ defineLocale('pl', pl);
     PlayerService,
     TournamentService,
     TournamentResolver,
+    TournamentListResolver,
     ConfigurationService,
     DatePipe,
     MatchService,
     TournamentMatchesResolver,
     TeamService,
+    TeamResolver,
     BsModalRef,
     MyTournamentGuard
   ],

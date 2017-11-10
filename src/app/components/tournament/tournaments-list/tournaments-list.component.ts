@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {TournamentService} from '../../../services/tournament/tournament.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Tournament} from '../../../models/tournament';
 
 @Component({
@@ -11,16 +10,11 @@ import {Tournament} from '../../../models/tournament';
 export class TournamentsListComponent implements OnInit {
   tournaments: Array<Tournament>;
 
-  constructor(private router: Router, private tournamentService: TournamentService) {
+  constructor(private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.tournamentService.listAll().subscribe(
-      data => {
-        console.log(data);
-        this.tournaments = data;
-      },
-      error => console.error(error)
-    );
+    this.tournaments = this.route.snapshot.data['tournamentList'];
+    console.log(this.tournaments);
   }
 }

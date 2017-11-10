@@ -9,8 +9,8 @@
 
 
   <div *ngIf="isDataLoaded">
-    <div *ngFor="let tournament of tournaments" class="col-md-4">
-      <div class="panel panel-default">
+    <div *ngFor="let tournament of tournaments" class="col-md-4 fadeInFromLeftAnimation">
+      <div class="panel panel-default ">
         <div class="panel-heading">
           <h4><i class="fa fa-fw fa-check"></i> {{tournament?.title}} <small class="text-nowrap"><i>{{tournament.startDate}} - {{tournament.endDate}}</i></small></h4>
         </div>
