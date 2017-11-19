@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {LoginComponent} from '../login/login.component';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BsModalRef, BsModalService, ModalDirective} from 'ngx-bootstrap';
+import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {Team} from '../../models/team';
+import {TeamService} from '../../services/team/team.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,25 +11,39 @@ import {LoginComponent} from '../login/login.component';
 })
 export class NavComponent implements OnInit {
   bsModalRef: BsModalRef;
+  message: string;
+  currentUser: any;
+  team: Team;
+  @ViewChild('childModal') childModal: ModalDirective;
 
-  constructor(private modalService: BsModalService) {
+
+  constructor(private modalService: BsModalService, private authenticationService: AuthenticationService,
+              private teamService: TeamService) {
   }
 
   ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser) {
+      this.teamService.findByAccountId(this.currentUser.id).subscribe(data => this.team = data);
+    }
   }
 
-  openModalWithComponent() {
-    const list = [
-      'Open a modal with component',
-      'Pass your data',
-      'Do something else',
-      '...'
-    ];
-    this.bsModalRef = this.modalService.show(LoginComponent);
-    this.bsModalRef.content.title = 'Modal with component';
-    this.bsModalRef.content.list = list;
-    setTimeout(() => {
-      list.push('PROFIT!!!');
-    }, 2000);
+  showChildModal(): void {
+    this.childModal.show();
+  }
+
+  logout(template: TemplateRef<any>) {
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
+
+  }
+
+  confirm() {
+    this.authenticationService.logout();
+    this.bsModalRef.hide();
+    this.ngOnInit();
+  }
+
+  decline() {
+    this.bsModalRef.hide();
   }
 }

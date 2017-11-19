@@ -1,0 +1,14 @@
+.big-glyphicon {
+  font-size: 200px;
+}
+
+.scoresInput {
+  font-size: 14px;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+

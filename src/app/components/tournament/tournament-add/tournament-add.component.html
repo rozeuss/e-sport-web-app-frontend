@@ -66,32 +66,6 @@
         </div>
       </div>
 
-      <!--<div class="form-group has-feedback">-->
-        <!--<label for="startDate" class="col-sm-2 control-label">Data rozpoczęcia</label>-->
-        <!--<div class="col-sm-4">-->
-          <!--<input type="text" class="form-control" id="startDate"-->
-                 <!--[minDate]="minDate"-->
-                 <!--[maxDate]="maxDate"-->
-                 <!--bsDatepicker-->
-                 <!--[bsConfig]="configurationService.bsDatepickerConfig"-->
-                 <!--[(ngModel)]="tournament.startDate" name="startDate" required>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<div class="form-group has-feedback">-->
-        <!--<label for="endDate" class="col-sm-2 control-label">Data zakończenia</label>-->
-        <!--<div class="col-sm-4">-->
-          <!--<input type="text" class="form-control" id="endDate"-->
-                 <!--[minDate]="minDate"-->
-                 <!--[maxDate]="maxDate"-->
-                 <!--bsDatepicker-->
-                 <!--[bsConfig]="configurationService.bsDatepickerConfig"-->
-                 <!--[(ngModel)]="tournament.endDate" name="endDate" required>-->
-        <!--</div>-->
-      <!--</div>-->
-
-
-
       <div class="form-group has-feedback" [class.has-success]="duration.dirty && duration.valid">
         <label for="duration" class="col-sm-2 control-label">Data</label>
         <div class="col-sm-4">
@@ -117,7 +91,6 @@
       </div>
       </div>
 
-
       <div class="form-group has-feedback">
         <label for="hasPlayoffs" class="col-sm-2 control-label">Dogrywka o 3 miejsce?</label>
         <div class="col-sm-4">
@@ -133,10 +106,6 @@
           <button class="btn btn-default" type="submit" [disabled]="!tournamentForm.valid">Utwórz</button>
         </div>
       </div>
-
-
-
-
     </form>
   </div>
 </div>

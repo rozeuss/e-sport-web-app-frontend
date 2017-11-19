@@ -12,13 +12,10 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="dropdown" routerLinkActive="active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Pages <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zespół <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li>
-              <a routerLink="faq.html">FAQ </a>
-            </li>
-            <li>
-              <a routerLink="404.html">404</a>
+              <a *ngIf="currentUser" [routerLink]="['/team', currentUser?.id]">Mój zespół</a>
             </li>
           </ul>
         </li>
@@ -33,14 +30,30 @@
         </li>
 
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="divider-vertical " routerLinkActive="active">
-          <a (click)="openModalWithComponent()">Zaloguj się</a>
+      <ul class="nav navbar-nav navbar-right divider-vertical">
+        <li *ngIf="!currentUser" routerLinkActive="active">
+          <a class="pointer" (click)="showChildModal()">Zaloguj się</a>
         </li>
-        <li routerLinkActive="active">
+        <li *ngIf="!currentUser" routerLinkActive="active">
           <a routerLink="registration">Załóż konto</a>
+        </li>
+        <li *ngIf="currentUser">
+          <a>{{currentUser.email}}</a>
+        </li>
+        <li *ngIf="currentUser" routerLinkActive="active">
+          <a (click)="logout(template)">Wyloguj się</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Na pewno chcesz się wylogować?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Tak</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Nie</button>
+  </div>
+</ng-template>
+
+<app-login [thisModal] = childModal [navbar] = this bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"></app-login>

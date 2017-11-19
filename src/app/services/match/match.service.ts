@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {Http, Response, URLSearchParams} from '@angular/http';
+import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Match} from '../../models/match';
 
@@ -20,18 +20,32 @@ export class MatchService {
     return this.http.post(this.entity_url + '/createMatches', params).map((response: Response) => response.json());
   }
 
-
   findAllByTournamentId(tournamentId: Number): Observable<Match[]> {
     return this.http.get(this.entity_url + '/findAllByTournamentId/' + tournamentId)
       .map((response: Response) => response.json());
   }
 
-  // update(hero: Hero): Promise<Hero> {
-  //   const url = `${this.heroesUrl}/${hero.id}`;
-  //   return this.http
-  //     .put(url, JSON.stringify(hero), {headers: this.headers})
-  //     .toPromise()
-  //     .then(() => hero)
-  //     .catch(this.handleError);
-  // }
+  findById(matchId: Number): Observable<Match> {
+    return this.http.get(this.entity_url + '/findById/' + matchId)
+      .map((response: Response) => response.json());
+  }
+
+  updateDate(matchId: Number, date: String) {
+    const params = new URLSearchParams();
+    params.append('date', date.toString());
+    const requestOptions = new RequestOptions();
+    requestOptions.params = params;
+    return this.http.put(this.entity_url + '/updateDate/' + matchId, {},
+      requestOptions).map((response: Response) => response.json());
+  }
+
+  updateScore(matchId: Number, scoreHome: Number, scoreAway: Number) {
+    const params = new URLSearchParams();
+    params.append('scoreHome', scoreHome.toString());
+    params.append('scoreAway', scoreAway.toString());
+    const requestOptions = new RequestOptions();
+    requestOptions.params = params;
+    return this.http.put(this.entity_url + '/updateScore/' + matchId, {},
+      requestOptions).map((response: Response) => response.json());
+  }
 }

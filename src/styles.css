@@ -1,16 +1,4 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
-/*html, body {*/
-  /*height: 100%;*/
-/*}*/
-/*.wrapper {*/
-  /*min-height: 100%;*/
-  /*height: auto !important;*/
-  /*height: 100%;*/
-  /*margin: 0 auto -28rem; !* the bottom margin is the negative value of the footer's height *!*/
-/*}*/
-/*.push {*/
-  /*height: 28rem; !* .push must be the same height as .footer *!*/
-/*}*/
 
 html {
 
@@ -177,4 +165,8 @@ hr {
 
 .paddingTop1Percent {
   padding-top: 1%;
+}
+
+.paddingBot1Percent {
+  padding-bottom: 1%;
 }

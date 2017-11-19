@@ -4,17 +4,12 @@
       <h1 class="page-header">Przeglądaj turnieje
         <small>Zapisz się już dziś</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="index.html">Home</a>
-        </li>
-        <li class="active">Blog Home Two</li>
-      </ol>
     </div>
   </div>
 
 
 
-  <div *ngFor="let tournament of tournaments" class="row fadeInAnimation">
+  <div *ngFor="let tournament of tournaments.reverse()" class="row fadeInAnimation">
     <div>
       <hr>
     <div class="col-md-2 text-center date-from-to">

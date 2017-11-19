@@ -7,6 +7,9 @@ import {Match} from '../../../models/match';
 import {TeamService} from '../../../services/team/team.service';
 import {Team} from '../../../models/team';
 import {TournamentService} from '../../../services/tournament/tournament.service';
+import {MatchService} from '../../../services/match/match.service';
+import {TreeNode} from 'primeng/primeng';
+
 
 @Component({
   selector: 'app-tournament-info',
@@ -14,14 +17,16 @@ import {TournamentService} from '../../../services/tournament/tournament.service
   styleUrls: ['./tournament-info.component.css']
 })
 export class TournamentInfoComponent implements OnInit {
+  data: TreeNode[];
 
   @Input() tournament: Tournament;
   matches: Array<Match>;
   teams: Array<Team>;
   signUpDisabled: Boolean = false;
-
+  matchPhaseMap: Map<number, Match[]> ;
+  playoff: Match;
   constructor(private route: ActivatedRoute, private location: Location, private teamService: TeamService,
-              private tournamentService: TournamentService) {
+              private tournamentService: TournamentService, private matchService: MatchService) {
     console.log(route);
   }
 
@@ -30,29 +35,29 @@ export class TournamentInfoComponent implements OnInit {
 
     this.tournament = this.route.snapshot.data['tournament'];
     this.matches = this.route.snapshot.data['tournamentMatches'];
+    this.prepareMatchPhaseMap();
+
     this.route.paramMap.subscribe(TEST => {
     });
+
+
     this.isAlreadySigned();
     this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
-      console.log(teams);
       this.teams = teams;
     });
-    // this.tournament = this.route.snapshot.data['tournament'];
-    // this.matches = this.route.snapshot.data['matches'];
-    // this.route.paramMap.switchMap((params: ParamMap) => this.tournamentService.findById(+params.get('id')))
-    //   .subscribe(tournament => {
-    //     console.log(tournament);
-    //     // this.tournament = tournament;
-    //     this.matchService.findAllByTournamentId(this.tournament.id).subscribe(matches => {
-    //       console.log(matches);
-    //       this.matches = matches;
-    //     });
-    //     this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
-    //       console.log(teams);
-    //       this.teams = teams;
-    //     });
-    //   });
+  }
 
+  private prepareMatchPhaseMap() {
+    this.matchPhaseMap = new Map<number, Match[]>();
+    const phases = Array.from(new Set(this.matches.map(match => match.phase)));
+    const openingPhase = Math.max(...phases);
+    for (let phase = openingPhase; phase >= 0; phase--) {
+      const match = this.matches.filter(i => i.phase === phase);
+      this.matchPhaseMap.set(phase, match);
+    }
+    if (this.matchPhaseMap.get(0)) {
+      this.playoff = this.matchPhaseMap.get(0).pop();
+    }
   }
 
   goBack(): void {
@@ -62,8 +67,14 @@ export class TournamentInfoComponent implements OnInit {
   signUp(): void {
     // @TODO PRZEKAZYWAC TEAMID Z SECURITY
     this.tournamentService.signUpForTournament(this.tournament.id, 1).subscribe(data => {
-        console.log(data);
         this.signUpDisabled = true;
+        this.matchService.findAllByTournamentId(this.tournament.id).subscribe(data2 => {
+          this.matches = data2;
+          this.prepareMatchPhaseMap();
+        });
+        this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
+          this.teams = teams;
+        });
       },
       error2 => {
         console.log(error2);
@@ -75,4 +86,14 @@ export class TournamentInfoComponent implements OnInit {
       .subscribe(data => this.signUpDisabled = data);
   }
 
+  isWinner(match, score): boolean {
+    if (match === null || score === null || score === 0) {
+      return false;
+    }
+    const scores: number[] = [];
+    scores.push(match.scoreAway);
+    scores.push(match.scoreHome);
+    const winnerScore = Math.max(...scores);
+    return score === winnerScore;
+  }
 }

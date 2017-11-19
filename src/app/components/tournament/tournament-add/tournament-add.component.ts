@@ -28,8 +28,6 @@ export class TournamentAddComponent {
               public configurationService: ConfigurationService, public datePipe: DatePipe) {
     this.tournament = <Tournament>{};
     this.minDate = new Date();
-    console.log(this.configurationService.bsDatepickerConfig);
-    console.log(router.url);
   }
 
   onSubmit(tournamentForm: FormGroup): void {
@@ -63,16 +61,8 @@ export class TournamentAddComponent {
     this.router.navigate(['tournament/my']);
   }
 
-  xd() {
-    console.log('cos');
-  }
-
   checkPrize(): Boolean {
     return this.tournament.prize < 10000;
   }
 
-  log(a) {
-    console.log(a);
-    console.log(this.hasPlayoff);
-  }
 }

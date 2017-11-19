@@ -19,7 +19,6 @@ export class MyTournamentsComponent implements OnInit {
     const ID_ACCOUNT_POBIERANY_Z_TOKENA = 1;
     this.tournamentService.findAllByOrganizer(ID_ACCOUNT_POBIERANY_Z_TOKENA).subscribe(tournaments => {
       this.tournaments = tournaments.reverse();
-      console.log(this.tournaments);
       this.isDataLoaded = true;
     }, error => {
       console.log(error);

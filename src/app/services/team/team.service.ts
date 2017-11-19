@@ -22,4 +22,9 @@ export class TeamService {
       .map((response: Response) => response.json());
   }
 
+  findByAccountId(accountId: Number): Observable<Team> {
+    return this.http.get(this.entity_url + '/findByAccountId/' + accountId)
+      .map((response: Response) => response.json());
+  }
+
 }

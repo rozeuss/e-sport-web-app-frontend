@@ -28,14 +28,25 @@ import { TournamentInfoComponent } from './components/tournament/tournament-info
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import {TeamService} from './services/team/team.service';
-import {BsModalService, BsModalRef, TooltipModule} from 'ngx-bootstrap';
+import {BsModalRef, TooltipModule} from 'ngx-bootstrap';
 import {TournamentResolver} from './services/resolvers/tournament-resolver';
 import {TournamentMatchesResolver} from './services/resolvers/tournament-matches-resolver';
 import {MyTournamentGuard} from './services/guards/my-tournament-guard';
 import {TournamentListResolver} from './services/resolvers/tournament-list-resolver';
 import { MatchInfoComponent } from './components/match/match-info/match-info.component';
 import { TeamInfoComponent } from './components/team/team-info/team-info.component';
+import {GroupByPipe} from './pipes/group-by-pipe';
 import {TeamResolver} from './services/resolvers/team-resolver';
+import {MapValuesPipe} from './pipes/map-values-pipe';
+import {MatchResolver} from './services/resolvers/match-resolver';
+import {SortPipe} from './pipes/sort-pipe';
+import {ChartModule} from 'primeng/primeng';
+import {AuthGuard} from './services/guards/auth.guard';
+import {AlertComponent} from './components/alert/alert.component';
+import {AccountService} from './services/account/account.service';
+import {AuthenticationService} from './services/authentication/authentication.service';
+import {AlertService} from './services/alert/alert.service';
+
 defineLocale('pl', pl);
 
 @NgModule({
@@ -53,7 +64,11 @@ defineLocale('pl', pl);
     TournamentsListComponent,
     TournamentInfoComponent,
     MatchInfoComponent,
-    TeamInfoComponent
+    TeamInfoComponent,
+    AlertComponent,
+    GroupByPipe,
+    MapValuesPipe,
+    SortPipe
   ],
   imports: [
     BrowserModule,
@@ -61,28 +76,36 @@ defineLocale('pl', pl);
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
-
     BsDatepickerModule.forRoot(),
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    ChartModule
 
 ],
   providers: [
+    AccountService,
+    AuthenticationService,
+    AlertService,
     PlayerService,
     TournamentService,
     TournamentResolver,
     TournamentListResolver,
     ConfigurationService,
     DatePipe,
+    GroupByPipe,
+    MapValuesPipe,
+    SortPipe,
     MatchService,
+    MatchResolver,
     TournamentMatchesResolver,
     TeamService,
     TeamResolver,
     BsModalRef,
-    MyTournamentGuard
+    MyTournamentGuard,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

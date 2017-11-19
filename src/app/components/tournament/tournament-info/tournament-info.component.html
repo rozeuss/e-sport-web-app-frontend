@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Turniej
-        <small> {{tournament.title}} </small>
+        <small> {{tournament.title}}</small>
         <span class="pull-right">
         <button class="btn btn-primary" (click)="goBack()">Wróć</button>
         <button class="btn btn-primary" [disabled]="signUpDisabled" (click)="signUp()">Zapisz się</button>
@@ -67,30 +67,69 @@
           </div>
         </div>
       </div>
-      <tabset >
+      <tabset>
         <tab heading="Mecze">
-          <div *ngFor="let match of matches" class="fadeInAnimation">
-            {{match | json}}
+          <div class="paddingTop1Percent fadeInAnimation">
+            <main id="tournament" class="fadeInAnimation">
+              <ul class="round" *ngFor="let matchPhase of matchPhaseMap | mapValues; let last = last;">
+                <!--<div class="row">    <pre>          {{matchPhase | json }} </pre>   </div>-->
+                <ng-container *ngIf="!last">
+                <ng-container *ngFor="let match of matchPhase.val | sort: 'id'">
+                  <li class="spacer">&nbsp;</li>
+                  <li class="game game-top" [class.winner]="isWinner(match, match?.scoreHome)">{{match?.teamHome?.name}}<span *ngIf="match.scoreHome != null">{{match?.scoreHome}}</span></li>
+                  <li class="game game-spacer color" [routerLink]="['/match', match.id]"><i class="fa fa-2x fa-question fa-inverse" aria-hidden="true"></i> </li>
+                  <li class="game game-bottom " [class.winner]="isWinner(match, match?.scoreAway)">{{match?.teamAway?.name}}<span *ngIf="match.scoreAway != null">{{match?.scoreAway}}</span></li>
+                </ng-container>
+                <li class="spacer">&nbsp;</li>
+                </ng-container>
+
+              </ul>
+            </main>
+
+
+
+            <div class="media-body" *ngIf="playoff">
+            <h3 class="media-heading" >Dogrywka o 3 miejsce</h3>
+
+            <main id="playoff">
+              <ul class="round" >
+                <li class="spacer">&nbsp;</li>
+                <li class="game game-top" [class.winner]="isWinner(playoff, playoff?.scoreHome)"> {{playoff?.teamHome?.name}} <span *ngIf="playoff.scoreHome">{{playoff?.scoreHome}}</span></li>
+                <li class="game game-spacer color" [routerLink]="['/match', playoff.id]"><i class="fa fa-2x fa-question fa-inverse" aria-hidden="true"></i></li>
+                <li class="game game-bottom " [class.winner]="isWinner(playoff, playoff?.scoreAway)">{{playoff?.teamAway?.name}} <span *ngIf="playoff.scoreAway">{{playoff?.scoreAway}}</span></li>
+              </ul>
+            </main>
+            </div>
           </div>
 
         </tab>
         <tab>
           <ng-template tabHeading>Zespoły</ng-template>
           <div class="row">
-          <div *ngFor="let team of teams" class="col-md-2 col-sm-4 col-xs-6 fadeInAnimation paddingTop1Percent">
+            <div *ngFor="let team of teams"
+                 class="col-md-2 col-sm-4 col-xs-6 fadeInAnimation paddingTop1Percent paddingBot1Percent">
 
-            <a [routerLink]="['/team', team.id]">
-            <img tooltip="{{team.name}}" class="img-responsive img-hover customer-img" src="http://placehold.it/250x250?text=Logo zespolu">
-            </a>
-          </div>
+              <a [routerLink]="['/team', team.id]">
+                <img tooltip="{{team.name}}" class="img-responsive img-hover customer-img"
+                     src="http://placehold.it/250x250?text=Logo zespolu">
+              </a>
+            </div>
           </div>
         </tab>
 
         <tab>
           <ng-template tabHeading>Terminarz</ng-template>
-            <div class="fadeInAnimation">
-              Daty
+          <div class="fadeInAnimation col-md-6 paddingTop1Percent">
+            <div class="well" *ngFor="let match of matches | groupBy:'startDate'">
+              <h4>{{ match.key }}</h4>
+              <div *ngFor="let matchDetails of match.value">
+                <div *ngIf="matchDetails.teamHome && matchDetails.teamAway">
+                  <p>{{ matchDetails.teamHome?.name}} vs {{ matchDetails.teamAway?.name}} </p>
+                </div>
+              </div>
             </div>
+
+          </div>
         </tab>
 
         <tab>

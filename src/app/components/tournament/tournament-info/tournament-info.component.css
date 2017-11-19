@@ -1,0 +1,74 @@
+main{
+  display:flex;
+  flex-direction:row;
+}
+.round{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  width:200px;
+  list-style:none;
+  padding:0;
+}
+.round .spacer{ flex-grow:1; }
+.round .spacer:first-child,
+.round .spacer:last-child{ flex-grow:.5; }
+
+.round .game-spacer{
+  flex-grow:1;
+}
+
+body{
+  font-family:sans-serif;
+  font-size:small;
+  padding:10px;
+  line-height:1.4em;
+}
+
+li.game{
+  /*padding-left:20px;*/
+}
+
+li.game.winner{
+  font-weight:bold;
+  font-size: 120%;
+  color: #337ab7;
+}
+li.game span{
+  float:right;
+  margin-right:5px;
+}
+
+li.game-top{ border-bottom:1px solid #aaa;   padding-left:20px;  }
+
+li.game-spacer{
+  border-right:1px solid #aaa;
+  min-height:40px;
+}
+
+li.game-bottom{
+  padding-left:20px;
+  border-top:1px solid #aaa;
+}
+.color:hover
+{
+  transition: 0.6s ease;
+  background: #337ab7;
+  transform: scale(1.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+
+.blink_me:hover {
+  animation: blinker 2s linear infinite;
+  border: dashed;
+}
+
+@keyframes blinker {
+  0% {opacity: 0; }
+  50% {opacity: 1; background-color: #337ab7; }
+  100% {opacity: 0; }
+}

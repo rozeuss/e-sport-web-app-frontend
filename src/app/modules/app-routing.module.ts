@@ -16,6 +16,9 @@ import {MyTournamentGuard} from '../services/guards/my-tournament-guard';
 import {TournamentListResolver} from '../services/resolvers/tournament-list-resolver';
 import {TeamInfoComponent} from '../components/team/team-info/team-info.component';
 import {TeamResolver} from '../services/resolvers/team-resolver';
+import {MatchInfoComponent} from '../components/match/match-info/match-info.component';
+import {MatchResolver} from '../services/resolvers/match-resolver';
+import {AuthGuard} from '../services/guards/auth.guard';
 
 const appRoutes: Routes = [
   {
@@ -25,11 +28,14 @@ const appRoutes: Routes = [
   {
     path: 'tournament/organize',
     component: TournamentAddComponent
+    // , canActivate: [AuthGuard]
   },
   {
     path: 'tournament/my',
     component: MyTournamentsComponent,
-    canActivate: [MyTournamentGuard]
+    canActivate: [MyTournamentGuard],
+    // , canActivate: [AuthGuard]
+
   },
   {
     path: 'tournament/list',
@@ -43,6 +49,13 @@ const appRoutes: Routes = [
     component: TeamInfoComponent,
     resolve: {
       team: TeamResolver,
+    }
+  },
+  {
+    path: 'match/:id',
+    component: MatchInfoComponent,
+    resolve: {
+      match: MatchResolver,
     }
   },
   {
