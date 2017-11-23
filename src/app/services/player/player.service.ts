@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 import {environment} from '../../../environments/environment';
@@ -21,5 +21,14 @@ export class PlayerService {
   findAllByTeamId(teamId: Number): Observable<Player[]> {
     return this.http.get(this.entity_url + '/findAllByTeamId/' + teamId)
       .map((response: Response) => response.json());
+  }
+
+  create(playerName: String, firstName: String, lastName: String, teamId: Number) {
+    const params = new URLSearchParams();
+    params.append('playerName', playerName.toString());
+    params.append('firstName', firstName ? firstName.toString() : null);
+    params.append('lastName', lastName ? lastName.toString() : null);
+    params.append('teamId', teamId.toString());
+    return this.http.post(this.entity_url + '/create', params).map((response: Response) => response.json());
   }
 }

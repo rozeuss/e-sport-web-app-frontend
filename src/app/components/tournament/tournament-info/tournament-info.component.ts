@@ -9,6 +9,7 @@ import {Team} from '../../../models/team';
 import {TournamentService} from '../../../services/tournament/tournament.service';
 import {MatchService} from '../../../services/match/match.service';
 import {TreeNode} from 'primeng/primeng';
+import {AlertService} from '../../../services/alert/alert.service';
 
 
 @Component({
@@ -18,29 +19,27 @@ import {TreeNode} from 'primeng/primeng';
 })
 export class TournamentInfoComponent implements OnInit {
   data: TreeNode[];
-
   @Input() tournament: Tournament;
   matches: Array<Match>;
   teams: Array<Team>;
-  signUpDisabled: Boolean = false;
-  matchPhaseMap: Map<number, Match[]> ;
+  signUpDisabled: Boolean = true;
+  matchPhaseMap: Map<number, Match[]>;
   playoff: Match;
+  currentUser: any;
+
   constructor(private route: ActivatedRoute, private location: Location, private teamService: TeamService,
-              private tournamentService: TournamentService, private matchService: MatchService) {
-    console.log(route);
+              private tournamentService: TournamentService, private matchService: MatchService,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
     // snapshot nie uzywa observable, lepiej robic this.route.paramMap.switchMap
-
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.tournament = this.route.snapshot.data['tournament'];
     this.matches = this.route.snapshot.data['tournamentMatches'];
     this.prepareMatchPhaseMap();
-
-    this.route.paramMap.subscribe(TEST => {
-    });
-
-
+    // this.route.paramMap.subscribe(TEST => {
+    // });
     this.isAlreadySigned();
     this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
       this.teams = teams;
@@ -65,24 +64,24 @@ export class TournamentInfoComponent implements OnInit {
   }
 
   signUp(): void {
-    // @TODO PRZEKAZYWAC TEAMID Z SECURITY
-    this.tournamentService.signUpForTournament(this.tournament.id, 1).subscribe(data => {
+    this.tournamentService.signUpForTournament(this.tournament.id, this.currentUser.id).subscribe(data => {
         this.signUpDisabled = true;
         this.matchService.findAllByTournamentId(this.tournament.id).subscribe(data2 => {
           this.matches = data2;
           this.prepareMatchPhaseMap();
+          this.alertService.success('Poprawnie zapisano na mecz.');
         });
         this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
           this.teams = teams;
         });
       },
       error2 => {
-        console.log(error2);
+        this.alertService.error('Nie udało się zapisać na mecz.');
       });
   }
 
-  isAlreadySigned(): void {
-    this.tournamentService.isTeamAlreadySignedForTournament(this.tournament.id, 1)
+  isAlreadySigned() {
+    this.tournamentService.isTeamAlreadySignedForTournament(this.tournament.id, this.currentUser.id)
       .subscribe(data => this.signUpDisabled = data);
   }
 

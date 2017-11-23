@@ -1,5 +1,5 @@
 <div class="container">
-
+<app-alert></app-alert>
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Turniej
@@ -48,7 +48,7 @@
             </div>
             <div class="media-body">
               <h3 class="media-heading">Nagroda</h3>
-              <p>{{tournament.prize}}</p>
+              <p>{{tournament.prize}} zł</p>
             </div>
           </div>
         </div>
@@ -76,21 +76,22 @@
                 <ng-container *ngIf="!last">
                 <ng-container *ngFor="let match of matchPhase.val | sort: 'id'">
                   <li class="spacer">&nbsp;</li>
-                  <li class="game game-top" [class.winner]="isWinner(match, match?.scoreHome)">{{match?.teamHome?.name}}<span *ngIf="match.scoreHome != null">{{match?.scoreHome}}</span></li>
+                  <li class="game game-top" [class.winner]="isWinner(match, match?.scoreHome)">
+                    <img *ngIf=match?.teamHome?.country title="{{match?.teamHome?.country}}" class="small-flag" [src]="'assets/images/png/' + match?.teamHome?.country.toLowerCase() + '.png'">
+                    {{match?.teamHome?.name}}&nbsp;<span *ngIf="match.scoreHome != null">{{match?.scoreHome}}
+                  </span></li>
                   <li class="game game-spacer color" [routerLink]="['/match', match.id]"><i class="fa fa-2x fa-question fa-inverse" aria-hidden="true"></i> </li>
-                  <li class="game game-bottom " [class.winner]="isWinner(match, match?.scoreAway)">{{match?.teamAway?.name}}<span *ngIf="match.scoreAway != null">{{match?.scoreAway}}</span></li>
+                  <li class="game game-bottom " [class.winner]="isWinner(match, match?.scoreAway)">
+                    <img *ngIf=match?.teamAway?.country title="{{match?.teamAway?.country}}" class="small-flag" [src]="'assets/images/png/' + match?.teamAway?.country.toLowerCase() + '.png'">
+                    {{match?.teamAway?.name}}&nbsp;<span *ngIf="match.scoreAway != null">{{match?.scoreAway}}</span></li>
                 </ng-container>
                 <li class="spacer">&nbsp;</li>
                 </ng-container>
 
               </ul>
             </main>
-
-
-
             <div class="media-body" *ngIf="playoff">
             <h3 class="media-heading" >Dogrywka o 3 miejsce</h3>
-
             <main id="playoff">
               <ul class="round" >
                 <li class="spacer">&nbsp;</li>
@@ -101,37 +102,33 @@
             </main>
             </div>
           </div>
-
         </tab>
         <tab>
           <ng-template tabHeading>Zespoły</ng-template>
           <div class="row">
             <div *ngFor="let team of teams"
                  class="col-md-2 col-sm-4 col-xs-6 fadeInAnimation paddingTop1Percent paddingBot1Percent">
-
               <a [routerLink]="['/team', team.id]">
                 <img tooltip="{{team.name}}" class="img-responsive img-hover customer-img"
-                     src="http://placehold.it/250x250?text=Logo zespolu">
+                     src="http://placehold.it/250x250//337ab7/?text={{team.name}}">
               </a>
             </div>
           </div>
         </tab>
-
         <tab>
           <ng-template tabHeading>Terminarz</ng-template>
-          <div class="fadeInAnimation col-md-6 paddingTop1Percent">
+          <div class="fadeInAnimation col-md-offset-3 col-md-6 paddingTop1Percent ">
             <div class="well" *ngFor="let match of matches | groupBy:'startDate'">
-              <h4>{{ match.key }}</h4>
-              <div *ngFor="let matchDetails of match.value">
+              <h4 class="text-center"><strong ><em><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{ match.key }}</em></strong></h4>
+              <hr>
+              <div class="text-center" *ngFor="let matchDetails of match.value">
                 <div *ngIf="matchDetails.teamHome && matchDetails.teamAway">
                   <p>{{ matchDetails.teamHome?.name}} vs {{ matchDetails.teamAway?.name}} </p>
                 </div>
               </div>
             </div>
-
           </div>
         </tab>
-
         <tab>
           <ng-template tabHeading>Oglądaj</ng-template>
           <div class="fadeInAnimation">
@@ -141,5 +138,4 @@
       </tabset>
     </div>
   </div>
-
 </div>

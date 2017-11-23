@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Tournament} from '../../../models/tournament';
 import {TournamentService} from '../../../services/tournament/tournament.service';
@@ -12,7 +12,8 @@ import {FormGroup} from '@angular/forms';
   templateUrl: './tournament-add.component.html',
   styleUrls: ['./tournament-add.component.css']
 })
-export class TournamentAddComponent {
+export class TournamentAddComponent implements OnInit {
+
 
   tournament: Tournament;
   successfullySubmitted: Boolean = false;
@@ -22,6 +23,7 @@ export class TournamentAddComponent {
   participants: Number;
   hasPlayoff: Boolean = false;
   daterangepickerModel: Date[];
+  currentUser: any;
 
 
   constructor(private router: Router, private tournamentService: TournamentService, private matchService: MatchService,
@@ -30,28 +32,26 @@ export class TournamentAddComponent {
     this.minDate = new Date();
   }
 
+  ngOnInit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
   onSubmit(tournamentForm: FormGroup): void {
-    console.log(tournamentForm);
     const tournament = tournamentForm.value;
-    console.log(this.participants);
-    console.log(this.hasPlayoff);
     tournament.id = null;
     tournament.startDate = this.datePipe.transform(this.daterangepickerModel[0], 'yyyy-MM-dd');
     tournament.endDate = this.datePipe.transform(this.daterangepickerModel[1], 'yyyy-MM-dd');
+    tournament.organizerId = this.currentUser.id;
     this.tournamentService.create(tournament).subscribe(
       new_tournament => {
-        console.log(new_tournament);
         this.tournament = new_tournament;
         this.successfullySubmitted = true;
-        this.matchService.createMatches(new_tournament.id, this.participants, this.hasPlayoff).subscribe(data => {
+        this.matchService.createMatches(new_tournament.id, this.participants, this.hasPlayoff).subscribe(() => {
           tournamentForm.reset();
-          console.log(data);
           setTimeout(() => {
-            // @TODO zrób modala elo
             this.successfullySubmitted = false;
           }, 5000);
         });
-        // that.goToCreatedTournament();
       },
       error => this.errorMessage = <any>error  // 'Nie udało się utworzyć turnieju'
     );

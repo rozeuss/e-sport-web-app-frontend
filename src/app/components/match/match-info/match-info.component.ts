@@ -6,7 +6,7 @@ import {ConfigurationService} from '../../../services/configuration/configuratio
 import {TournamentService} from '../../../services/tournament/tournament.service';
 import {Tournament} from '../../../models/tournament';
 import {MatchService} from '../../../services/match/match.service';
-import {Message} from 'primeng/primeng';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-match-info',
@@ -20,11 +20,13 @@ export class MatchInfoComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   isEditingScores: Boolean = false;
-
+  helper: boolean;
+  isNextMatchReady: Boolean = false;
+  currentUser: any;
 
   constructor(private route: ActivatedRoute, private location: Location, public configurationService: ConfigurationService,
-              private tournamentService: TournamentService, private matchService: MatchService, public datePipe: DatePipe) {
-
+              private tournamentService: TournamentService, private matchService: MatchService, public datePipe: DatePipe,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -35,6 +37,11 @@ export class MatchInfoComponent implements OnInit {
       this.minDate = new Date(this.tournament.startDate);
       this.maxDate = new Date(this.tournament.endDate);
     });
+    this.matchService.findById(this.match.nextMatchId).subscribe(data => {
+      if (data.teamAway !== null && data.teamHome !== null) {
+        this.isNextMatchReady = true;
+      }
+    });
   }
 
   goBack(): void {
@@ -42,20 +49,45 @@ export class MatchInfoComponent implements OnInit {
   }
 
   updateDate(newDate: Date): void {
-    console.log(newDate);
-    console.log('siemanero');
-    this.matchService.updateDate(this.match.id, this.datePipe.transform(newDate, 'yyyy-MM-dd')).subscribe(data => console.log(data));
+    this.matchService.updateDate(this.match.id, this.datePipe.transform(newDate, 'yyyy-MM-dd'))
+      .subscribe(data => {
+        if (this.helper === true) {
+          this.alertService.success('Poprawnie ustawiono datę ' + data.startDate);
+        }
+      });
   }
 
   editScores(): void {
+    if (this.isEditingScores === false) {
+      this.match.scoreHome = 0;
+      this.match.scoreAway = 0;
+    }
     this.isEditingScores = true;
   }
 
   saveChanges(): void {
-    this.isEditingScores = false;
-    console.log('udalo!!');
-    this.matchService.updateScore(this.match.id, this.match.scoreHome, this.match.scoreAway).subscribe(data => console.log(data));
-
+    if (this.match.scoreAway === 0 && this.match.scoreHome === 0) {
+      this.match.scoreHome = null;
+      this.match.scoreAway = null;
+    } else {
+      this.isEditingScores = false;
+      this.matchService.updateScore(this.match.id, this.match.scoreHome, this.match.scoreAway)
+        .subscribe(data => {
+          this.alertService.success('Poprawnie ustawiono wynik ' + data.scoreHome + ':' + data.scoreAway);
+        });
+    }
   }
 
+  canEdit(): boolean {
+    return this.match.teamAway !== null && this.match.teamHome !== null;
+  }
+
+  setHelper(): boolean {
+    this.helper = true;
+    return this.helper;
+  }
+
+  isButtonDisabled() {
+    return this.match.scoreHome === this.match.scoreAway;
+  }
 }

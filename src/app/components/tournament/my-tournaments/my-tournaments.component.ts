@@ -11,18 +11,21 @@ import {Tournament} from '../../../models/tournament';
 export class MyTournamentsComponent implements OnInit {
   tournaments: Array<Tournament>;
   isDataLoaded: Boolean = false;
+  currentUser: any;
 
   constructor(private router: Router, private tournamentService: TournamentService) {
   }
 
   ngOnInit() {
-    const ID_ACCOUNT_POBIERANY_Z_TOKENA = 1;
-    this.tournamentService.findAllByOrganizer(ID_ACCOUNT_POBIERANY_Z_TOKENA).subscribe(tournaments => {
-      this.tournaments = tournaments.reverse();
-      this.isDataLoaded = true;
-    }, error => {
-      console.log(error);
-    });
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser) {
+      this.tournamentService.findAllByOrganizer(this.currentUser.id).subscribe(tournaments => {
+        this.tournaments = tournaments.reverse();
+        this.isDataLoaded = true;
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 
   addTournament() {

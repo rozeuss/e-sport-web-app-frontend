@@ -11,7 +11,7 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="dropdown" routerLinkActive="active">
+        <li *ngIf="currentUser"  class="dropdown" routerLinkActive="active">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zespół <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li>
@@ -22,13 +22,12 @@
         <li routerLinkActive="active">
           <a routerLink="tournament/list">Przeglądaj</a>
         </li>
-        <li routerLinkActive="active">
+        <li *ngIf="currentUser" routerLinkActive="active">
         <a routerLink="tournament/organize">Zorganizuj turniej</a>
       </li>
-        <li routerLinkActive="active">
+        <li *ngIf="currentUser" routerLinkActive="active">
           <a routerLink="tournament/my">Moje turnieje</a>
         </li>
-
       </ul>
       <ul class="nav navbar-nav navbar-right divider-vertical">
         <li *ngIf="!currentUser" routerLinkActive="active">
@@ -41,7 +40,7 @@
           <a>{{currentUser.email}}</a>
         </li>
         <li *ngIf="currentUser" routerLinkActive="active">
-          <a (click)="logout(template)">Wyloguj się</a>
+          <a class="pointer" (click)="logout(template)">Wyloguj się</a>
         </li>
       </ul>
     </div>

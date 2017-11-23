@@ -3,338 +3,61 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Rejestracja
-        <small>Wprowadzono niepoprawne dane</small>
       </h1>
     </div>
   </div>
   <!--<form class="form-registration">-->
-  <form class="form-registration jumbotron" name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+  <app-alert></app-alert>
+  <form class="form-registration jumbotron" name="form" (ngSubmit)="f.form.valid && register(f)" #f="ngForm" >
     <div class="col-md-6">
-      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !inputEmail.valid }">
+      <div class="form-group"
+           [class.has-error]="inputEmail.dirty && !inputEmail.valid">
         <label class="col-md-1" for="inputEmail">Email</label>
         <input type="email" id="inputEmail" name="inputEmail" [(ngModel)]="model.inputEmail" #inputEmail="ngModel"
-               class="form-control" placeholder="Email" required autofocus>
-        <div *ngIf="f.submitted && !inputEmail.valid" class="help-block">Email jest wymagany.</div>
+               class="form-control" placeholder="Email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required autofocus>
+        <div *ngIf="inputEmail.dirty && !inputEmail.valid" class="help-block">Email jest wymagany. </div>
+        <div *ngIf="inputEmail.hasError('pattern') && inputEmail.touched" class="help-block">Email jest niepoprawny. </div>
 
       </div>
 
-      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !inputPassword.valid }">
+      <div class="form-group"
+        [class.has-error]="inputPassword.dirty && !inputPassword.valid">
         <label class="col-md-1" for="inputPassword">Hasło</label>
         <input type="password" id="inputPassword" name="inputPassword" [(ngModel)]="model.inputPassword"
-               #inputPassword="ngModel" class="form-control" placeholder="Hasło" required>
-        <div *ngIf="f.submitted && !inputPassword.valid" class="help-block">Hasło jest wymagane.</div>
+               #inputPassword="ngModel" class="form-control" placeholder="Hasło" minlength="5" required>
+        <div *ngIf="inputPassword.dirty && !inputPassword.valid" class="help-block">Hasło jest wymagane.</div>
+        <div *ngIf="inputPassword.hasError('minlength') && inputPassword.touched" class="help-block">Hasło musi mieć minimum 5 znaków.</div>
       </div>
 
-      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !inputName.valid }">
-        <label class="col-md-3" for="inputName">Nazwa zespołu</label>
+      <div class="form-group"
+           [class.has-error]="inputName.dirty && !inputName.valid">
+        <label class="col-md-4" for="inputName">Nazwa zespołu</label>
         <input type="text" id="inputName" name="inputName" [(ngModel)]="model.inputName" #inputName="ngModel"
                class="form-control" placeholder="Nazwa zespołu" required>
-        <div *ngIf="f.submitted && !inputName.valid" class="help-block">Nazwa jest wymagana.</div>
+        <div *ngIf="inputName.dirty && !inputName.valid" class="help-block">Nazwa jest wymagana.</div>
 
       </div>
 
-      <div class="form-group">
+      <div class="form-group"
+        [class.has-error]="inputCountry.dirty && !inputCountry.valid">
         <label class="col-md-1" for="inputCountry">Kraj</label>
-        <select class="form-control" id="inputCountry" name="country" title="country" required>
-          <option value="">Wybierz kraj</option>
-          <option value="PL">Polska</option>
-          <option value="EN">Anglia</option>
+        <select type="text" class="form-control" id="inputCountry" name="inputCountry" title="country" required
+                [(ngModel)]="model.inputCountry"  #inputCountry="ngModel">
+          <option [ngValue]=undefined selected disabled>Wybierz kraj</option>
+          <option *ngFor="let level of levels" [selected]="null" [ngValue]="level">{{level}}</option>
         </select>
-      </div>
+        <div *ngIf="inputCountry.dirty && !inputCountry.valid" class="help-block">Kraj jest wymagany.</div>
+</div>
     </div>
 
 
-    <div class="col-md-5 text-center ">
-      <span class="glyphicon glyphicon-log-in big-glyphicon center-glyphicon"></span>
+    <div class="col-md-5 center-glyphicon ">
+      <span class="glyphicon glyphicon-log-in big-glyphicon "></span>
     </div>
             
     <div class="form-group">
-      <button class="btn btn-lg btn-primary btn-block " type="submit">OK</button>
+      <button [disabled]="!f.valid" class="btn btn-lg btn-primary btn-block " type="submit">OK</button>
     </div>
   </form>
 
-
-
-  <div class="row">
-    <div class="col-lg-12">
-      <h2 class="page-header">Services Panels</h2>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="panel panel-default text-center">
-        <div class="panel-heading">
-                        <span class="fa-stack fa-5x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                        </span>
-        </div>
-        <div class="panel-body">
-          <h4>Service One</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="panel panel-default text-center">
-        <div class="panel-heading">
-                        <span class="fa-stack fa-5x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-car fa-stack-1x fa-inverse"></i>
-                        </span>
-        </div>
-        <div class="panel-body">
-          <h4>Service Two</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="panel panel-default text-center">
-        <div class="panel-heading">
-                        <span class="fa-stack fa-5x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-support fa-stack-1x fa-inverse"></i>
-                        </span>
-        </div>
-        <div class="panel-body">
-          <h4>Service Three</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="panel panel-default text-center">
-        <div class="panel-heading">
-                        <span class="fa-stack fa-5x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-database fa-stack-1x fa-inverse"></i>
-                        </span>
-        </div>
-        <div class="panel-body">
-          <h4>Service Four</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Content Row -->
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit?</a>
-            </h4>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Curabitur
-                eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
-            </h4>
-          </div>
-          <div id="collapseTwo" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Aenean
-                consequat lorem ut felis ullamcorper?</a>
-            </h4>
-          </div>
-          <div id="collapseThree" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit?</a>
-            </h4>
-          </div>
-          <div id="collapseFour" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Curabitur
-                eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
-            </h4>
-          </div>
-          <div id="collapseFive" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Aenean
-                consequat lorem ut felis ullamcorper?</a>
-            </h4>
-          </div>
-          <div id="collapseSix" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit?</a>
-            </h4>
-          </div>
-          <div id="collapseSeven" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">Curabitur
-                eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
-            </h4>
-          </div>
-          <div id="collapseEight" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">Aenean
-                consequat lorem ut felis ullamcorper?</a>
-            </h4>
-          </div>
-          <div id="collapseNine" class="panel-collapse collapse">
-            <div class="panel-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-              moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-              Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-              shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-              proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <!-- /.panel -->
-      </div>
-      <!-- /.panel-group -->
-    </div>
-    <!-- /.col-lg-12 -->
-  </div>
-  <!-- /.row -->
-
-  <hr>
-
-
-  <div class="row">
-    <div class="col-md-4">
-
-      <!-- Blog Search Well -->
-      <div class="well">
-        <h4>Blog Search</h4>
-        <div class="input-group">
-          <input type="text" class="form-control">
-          <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                        </span>
-        </div>
-        <!-- /.input-group -->
-      </div>
-      <!-- Side Widget Well -->
-      <div class="well">
-        <h4>Side Widget Well</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus
-          laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-      </div>
-
-    </div>
-
-
-    <hr>
-    <hr>
-    <hr>
-    <hr>
-    <hr>
-
-  </div>
 </div>

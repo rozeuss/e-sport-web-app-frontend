@@ -72,3 +72,31 @@ li.game-bottom{
   50% {opacity: 1; background-color: #337ab7; }
   100% {opacity: 0; }
 }
+
+.small-flag {
+  height: 20px;
+  width: 20px;
+}
+
+.flexing-center {
+  /*height: 100%;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+.color i {
+  opacity: 0;
+}
+
+.color:hover i {
+  opacity: 1;
+}
+
+
+.elo {
+  margin-left: auto;
+  margin-right: auto;
+}

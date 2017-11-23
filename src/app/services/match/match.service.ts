@@ -27,7 +27,8 @@ export class MatchService {
 
   findById(matchId: Number): Observable<Match> {
     return this.http.get(this.entity_url + '/findById/' + matchId)
-      .map((response: Response) => response.json());
+      .map((response: Response) => response.text() ? response.json() : {});
+    // res.text() ? res.json() : {}; ;
   }
 
   updateDate(matchId: Number, date: String) {

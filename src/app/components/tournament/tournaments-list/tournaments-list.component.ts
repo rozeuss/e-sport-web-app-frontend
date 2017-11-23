@@ -15,6 +15,5 @@ export class TournamentsListComponent implements OnInit {
 
   ngOnInit() {
     this.tournaments = this.route.snapshot.data['tournamentList'];
-    console.log(this.tournaments);
   }
 }

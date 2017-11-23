@@ -34,7 +34,6 @@ export class NavComponent implements OnInit {
 
   logout(template: TemplateRef<any>) {
     this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
-
   }
 
   confirm() {
@@ -45,5 +44,16 @@ export class NavComponent implements OnInit {
 
   decline() {
     this.bsModalRef.hide();
+  }
+
+  canActivate() {
+    if (localStorage.getItem('currentUser')) {
+      // logged in so return true
+      return true;
+    }
+    this.showChildModal();
+    // not logged in so redirect to login page with the return url
+    // this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
+    return false;
   }
 }

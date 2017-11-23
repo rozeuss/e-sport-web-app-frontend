@@ -69,7 +69,7 @@
       <div class="form-group has-feedback" [class.has-success]="duration.dirty && duration.valid">
         <label for="duration" class="col-sm-2 control-label">Data</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="duration" #duration="ngModel" readonly
+          <input type="text" class="form-control " id="duration" #duration="ngModel" readonly
                  [minDate]="minDate"
                  [maxDate]="maxDate"
                  bsDaterangepicker
@@ -81,7 +81,7 @@
       </div>
 
 
-      <div class="form-group has-feedback">
+      <div class="form-group has-feedback zindex">
       <label for="participants" class="col-sm-2 control-label">Liczba uczestników</label>
       <div id="participants" class="col-sm-4 btn-group">
         <label class="btn btn-primary" name="participants" [(ngModel)]="participants" btnRadio="4">4</label>

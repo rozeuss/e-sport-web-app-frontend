@@ -15,4 +15,5 @@ export enum Country {
   'Russia',
   'Ukraine',
   'Norway',
+  'England',
 }

@@ -8,6 +8,7 @@
         <button class="btn btn-primary" (click)="goBack()">Wróć</button>
         </span>
       </h1>
+      <app-alert></app-alert>
       <tabset>
         <tab heading="Info">
           <div class="row paddingTop1Percent paddingBot1Percent">
@@ -23,7 +24,7 @@
                      [disabled]="true"
                      [bsConfig]="configurationService.bsDatepickerConfig">
               <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" (click)="dp.toggle()"><i
+                            <button class="btn btn-default" type="button" (click)="dp.toggle();setHelper()"><i
                               class="fa fa-calendar"></i></button>
               </span>
             </div>
@@ -43,30 +44,36 @@
                   <th class="text-right">Zespół 2</th>
                 </tr>
                 </thead>
-                <tbody (dblclick)="editScores()">
+                <tbody (dblclick)="!isNextMatchReady && canEdit() && editScores()">
                 <tr>
-                  <td class="text-left">{{match?.teamHome?.name}}</td>
-                  <td class="text-right">
+                  <td class="text-left" [class.success] = "match.scoreAway < match.scoreHome" [class.danger] = "match.scoreAway > match.scoreHome">
+                    {{match?.teamHome?.name}}
+                  </td>
+                  <td class="text-right" [class.success] = "match.scoreAway < match.scoreHome" [class.danger] = "match.scoreAway > match.scoreHome">
                     <span [hidden]="isEditingScores" *ngIf="match.scoreHome != null">{{match?.scoreHome}}</span>
-                    <input class="col-md-5 pull-right scoresInput" [hidden]="!isEditingScores" [(ngModel)]=match.scoreHome
+                    <input  name="scoreHome" type="number" (keydown)="false" [min]="0" [max]="3" title="Score home" class="col-md-5 pull-right scoresInput" [hidden]="!isEditingScores" [(ngModel)]=match.scoreHome
                            autofocus/>
                   </td>
-                  <td class="text-left">
+                  <td class="text-left" [class.success] = "match.scoreAway > match.scoreHome" [class.danger] = "match.scoreAway < match.scoreHome">
                     <span [hidden]="isEditingScores" *ngIf="match.scoreAway != null">{{match?.scoreAway}}</span>
-                    <input class="col-md-5 pull-left scoresInput" [hidden]="!isEditingScores" [(ngModel)]=match.scoreAway/>
+                    <input name="scoreAway" type="number" (keydown)="false" [min]="0" [max]="3" title="Score away" class="col-md-5 pull-left scoresInput" [hidden]="!isEditingScores" [(ngModel)]=match.scoreAway />
                   </td>
-                  <td class="text-right">{{match?.teamAway?.name}}</td>
+                  <td class="text-right" [class.success] = "match.scoreAway > match.scoreHome" [class.danger] = "match.scoreAway < match.scoreHome">{{match?.teamAway?.name}}</td>
                 </tr>
                 </tbody>
               </table>
             </div>
             <div class="col-md-3"></div>
             <div [hidden]="!isEditingScores" >
-              <button (click)="saveChanges()" class="col-md-offset-5 col-md-2 btn btn-primary">
+              <button (click)="saveChanges()" [disabled]="isButtonDisabled()" class="col-md-offset-5 col-md-2 btn btn-primary">
                 <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
               </button>
             </div>
           </div>
+        </tab>
+        <tab heading="Oglądaj">
+
+
         </tab>
       </tabset>
     </div>

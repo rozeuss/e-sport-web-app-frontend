@@ -1,24 +1,36 @@
 <div class="container">
-
+  <app-alert></app-alert>
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Zespół
         <small> {{team?.name}}</small>
-        <small> {{team?.country}}</small>
+        <img title="{{team?.country}}" class="flag"
+             src="{{'assets/images/png/' + team?.country.toLowerCase() + '.png'}}">
         <span class="pull-right">
         <button class="btn btn-primary" (click)="goBack()">Wróć</button>
         </span>
       </h1>
       <tabset>
-        <tab heading="Zawodnicy">
-          <div class="row">
-          <div *ngFor="let player of players" class="fadeInAnimation">
-              <div class="col-md-3 text-center">
+        <tab class="paddingBot1Percent " heading="Zawodnicy">
+          <div class="row flexing-center">
+            <div *ngFor="let player of players" class="fadeInAnimation col-md-3">
+              <div class="text-center ">
                 <div class="thumbnail">
-                  <img class="img-responsive" src="http://placehold.it/400x300" alt="">
+                  <div class="kontainer">
+                    <img class="img-responsive image" src="http://placehold.it/400x300" alt="">
+                    <div class="overlay">
+                      <div class="text"><a class="white-text" [routerLink]="['/player', player.id]">{{player.playerName}}
+                        <i class="fa fa-male" aria-hidden="true"></i>
+                      </a></div>
+                    </div>
+                  </div>
                   <div class="caption">
                     <h3>{{player.playerName}}<br>
-                      <small>{{player.firstName}} {{player.lastName}}</small>
+                      <small *ngIf="!player?.firstName || !player?.lastName; else elseBlock">{{player?.firstName}}&nbsp;{{player?.lastName}}</small>
+                      <ng-template #elseBlock>
+                        <small>{{player.firstName}} {{player.lastName}}
+                        </small>
+                      </ng-template>
                     </h3>
                     <ul class="list-inline">
                       <li><a><i class="fa fa-2x fa-facebook-square"></i></a>
@@ -33,16 +45,50 @@
               </div>
             </div>
           </div>
+          <div class="paddingBot5Percent paddingTop1Percent" *ngIf="isPermitted() && players?.length < 5">
+            <button class="btn btn-primary col-md-offset-5 col-md-2" (click)="openModal(template)">Dodaj zawodnika
+            </button>
+          </div>
         </tab>
         <tab>
           <ng-template tabHeading>Statystyki</ng-template>
-          <div class="row fadeInAnimation">
-            <!--<p-chart type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>-->
-
+          <div class="row fadeInAnimation paddingBot1Percent paddingTop1Percent">
+            <div class="text-center row">
+              <h3 class="well well-sm margins">Ogólne <i class="fa fa-bar-chart" aria-hidden="true"></i></h3>
+              <div class="col-lg-offset-1 col-lg-10">
+              <p-chart type="bar" [data]="matchesReportData"></p-chart>
+              </div>
+            </div>
+            <div class="text-center row paddingTop1Percent">
+              <h3 class="well well-sm margins">Zajęte miejsca <i class="fa fa-pie-chart" aria-hidden="true"></i></h3>
+              <div class="col-lg-offset-1 col-lg-10">
+                <p-chart #data type="doughnut" [data]="placesReportData"></p-chart>
+                <div> </div>
+              </div>
+            </div>
           </div>
         </tab>
       </tabset>
     </div>
   </div>
-
 </div>
+
+<ng-template #template>
+  <div class="modal-header"><h4>Dodawanie gracza. </h4></div>
+  <div class="modal-body text-center">
+    <form name="form" #f="ngForm">
+      <div [class.has-error]="playerName.dirty && !playerName.valid">
+        <input id="playerName" #playerName="ngModel" name="playerName" type="text" class="form-control"
+               [(ngModel)]="newPlayer.playerName" placeholder="Gracz" autofocus required>
+      </div>
+      <input id="firstName" #firstName="ngModel" name="firstName" type="text" class="form-control"
+             [(ngModel)]="newPlayer.firstName" placeholder="Imię">
+      <input id="lastName" #lastName="ngModel" name="lastName" type="text" class="form-control"
+             [(ngModel)]="newPlayer.lastName" placeholder="Nazwisko">
+      <div class=" btn-group paddingBot1Percent paddingTop1Percent">
+        <button type="button" class="btn btn-primary" [disabled]="!f.valid" (click)="confirm()">Dodaj</button>
+        <button type="button" class="btn btn-default" (click)="decline()">Anuluj</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
