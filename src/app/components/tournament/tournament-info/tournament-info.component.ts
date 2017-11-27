@@ -25,6 +25,7 @@ export class TournamentInfoComponent implements OnInit {
   signUpDisabled: Boolean = true;
   matchPhaseMap: Map<number, Match[]>;
   playoff: Match;
+  winner: Team;
   currentUser: any;
 
   constructor(private route: ActivatedRoute, private location: Location, private teamService: TeamService,
@@ -44,6 +45,7 @@ export class TournamentInfoComponent implements OnInit {
     this.teamService.findAllSignedForTournament(this.tournament.id).subscribe(teams => {
       this.teams = teams;
     });
+    this.getWinner();
   }
 
   private prepareMatchPhaseMap() {
@@ -81,9 +83,12 @@ export class TournamentInfoComponent implements OnInit {
   }
 
   isAlreadySigned() {
-    this.tournamentService.isTeamAlreadySignedForTournament(this.tournament.id, this.currentUser.id)
-      .subscribe(data => this.signUpDisabled = data);
+    if (this.currentUser) {
+      this.tournamentService.isTeamAlreadySignedForTournament(this.tournament.id, this.currentUser.id)
+        .subscribe(data => this.signUpDisabled = data);
+    }
   }
+
 
   isWinner(match, score): boolean {
     if (match === null || score === null || score === 0) {
@@ -94,5 +99,14 @@ export class TournamentInfoComponent implements OnInit {
     scores.push(match.scoreHome);
     const winnerScore = Math.max(...scores);
     return score === winnerScore;
+  }
+
+  getWinner() {
+    const finalMatch = this.matchPhaseMap.get(1)[0];
+    if (finalMatch.scoreHome !== null && finalMatch.scoreAway !== null && finalMatch.scoreHome > finalMatch.scoreAway) {
+      this.winner = finalMatch.teamHome;
+    } else if (finalMatch.scoreHome !== null && finalMatch.scoreAway !== null && finalMatch.scoreHome < finalMatch.scoreAway) {
+      this.winner = finalMatch.teamAway;
+    }
   }
 }

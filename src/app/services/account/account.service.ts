@@ -18,7 +18,7 @@ export class AccountService {
     const requestOptions = new RequestOptions();
     requestOptions.params = params;
     return this.http.get(this.entity_url + '/getByEmail', requestOptions)
-      .map((response: Response) => response.json());
+      .map((response: Response) => response.text() ? response.json() : {});
   }
 
   create(email: String, password: String) {

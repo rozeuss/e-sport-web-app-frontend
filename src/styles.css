@@ -109,7 +109,7 @@ hr {
 
 .grad {
   background: rgba(255,255,255,1);
-  background: linear-gradient(to right, rgb(190, 190, 190) 0%, rgb(255, 255, 255) 13%, rgb(255, 255, 255) 87%, rgb(190, 190, 190) 100%);
+  background: linear-gradient(to right, rgb(195, 195, 195) 0%, rgb(255, 255, 255) 13%, rgb(255, 255, 255) 87%, rgb(195, 195, 195) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff ', endColorstr='#ededed ', GradientType=1 );
 }
 
@@ -174,3 +174,5 @@ hr {
 .paddingBot5Percent {
   padding-bottom: 5%;
 }
+
+.fa-1-3x{font-size:1.3em}

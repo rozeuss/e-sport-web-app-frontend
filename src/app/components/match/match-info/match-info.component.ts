@@ -23,6 +23,7 @@ export class MatchInfoComponent implements OnInit {
   helper: boolean;
   isNextMatchReady: Boolean = false;
   currentUser: any;
+  isDateButtonDisabled = true;
 
   constructor(private route: ActivatedRoute, private location: Location, public configurationService: ConfigurationService,
               private tournamentService: TournamentService, private matchService: MatchService, public datePipe: DatePipe,
@@ -30,16 +31,21 @@ export class MatchInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.match = this.route.snapshot.data['match'];
     this.datepickerModel = new Date(this.match.startDate);
     this.tournamentService.findById(this.match.tournamentId).subscribe(data => {
       this.tournament = data;
       this.minDate = new Date(this.tournament.startDate);
       this.maxDate = new Date(this.tournament.endDate);
+      this.isDisabled();
     });
     this.matchService.findById(this.match.nextMatchId).subscribe(data => {
       if (data.teamAway !== null && data.teamHome !== null) {
         this.isNextMatchReady = true;
+      }
+      if (data && Object.keys(data).length === 0) {
+        this.isNextMatchReady = false;
       }
     });
   }
@@ -52,7 +58,7 @@ export class MatchInfoComponent implements OnInit {
     this.matchService.updateDate(this.match.id, this.datePipe.transform(newDate, 'yyyy-MM-dd'))
       .subscribe(data => {
         if (this.helper === true) {
-          this.alertService.success('Poprawnie ustawiono datę ' + data.startDate);
+          this.alertService.success('Poprawnie ustawiono datę ' + data.startDate + '.');
         }
       });
   }
@@ -73,7 +79,7 @@ export class MatchInfoComponent implements OnInit {
       this.isEditingScores = false;
       this.matchService.updateScore(this.match.id, this.match.scoreHome, this.match.scoreAway)
         .subscribe(data => {
-          this.alertService.success('Poprawnie ustawiono wynik ' + data.scoreHome + ':' + data.scoreAway);
+          this.alertService.success('Poprawnie ustawiono wynik ' + data.scoreHome + ':' + data.scoreAway + '.');
         });
     }
   }
@@ -89,5 +95,11 @@ export class MatchInfoComponent implements OnInit {
 
   isButtonDisabled() {
     return this.match.scoreHome === this.match.scoreAway;
+  }
+
+  isDisabled() {
+    if (this.currentUser !== null && this.currentUser.id === this.tournament.organizerId) {
+      this.isDateButtonDisabled = false;
+    }
   }
 }

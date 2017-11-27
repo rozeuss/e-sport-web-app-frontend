@@ -27,7 +27,7 @@ export class RegistrationComponent implements OnInit {
 
   register(form: NgForm) {
     this.accountService.findByEmail(this.model.inputEmail).subscribe((exists) => {
-      if (!exists) {
+      if (exists !== '') {
         this.accountService.create(this.model.inputEmail, this.model.inputPassword).subscribe(account => {
           this.teamService.create(this.model.inputName, this.model.inputCountry, account.id).subscribe(data => {
             this.alertService.success('Poprawnie utworzono konto.');
